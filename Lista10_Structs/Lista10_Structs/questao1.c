@@ -1,110 +1,113 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
-#define TAM 3
+#define REG 3
+#define NOME_TAM 50
 
 struct Estado {
-	char nome[50];
-	int qntVeiculos;a
+	char nome[NOME_TAM];
+	int qntVeiculos;
 	int qntAcidentes;
 };
 
-// Letra A
-void coletarDados(struct Estado vetor[], int tam);
-// Letra B
-void maiorMenorQntAcidentes(struct Estado vetor[], int tam, int *posMenor, int *posMaior);
-// TODO: Letra C
-// Letra D
-int mediaAcidentes(struct Estado vetor[], int tam);
-// Letra E
-void estadosAcimaMedia(struct Estado vetor[], int tam, int media);
+void cadastrarEstados(struct Estado estados[], int tam);
+void maiorMenorAcidentes(struct Estado estados[], int tam, int *posMenor, int *posMaior);
+int mediaAcidentes(struct Estado estados[], int tam);
+float mediaAcidentesPorEstado(struct Estado estados[], int pos);
+void estadosAcimaMedia(struct Estado estados[], int tam, int media);
 
 int main() {
-	system("chcp 1252 >nul");
-	struct Estado estados[TAM];
+	struct Estado estados[REG];
+	cadastrarEstados(estados, REG);
 
-	coletarDados(estados, TAM);
+	int posMenor, posMaior;
+	maiorMenorAcidentes(estados, REG, &posMenor, &posMaior);
+	printf("Estado com menor numero de acidentes: %s.\n", estados[posMenor].nome);
+	printf("Estado com maior numero de acidentes: %s.\n", estados[posMaior].nome);
 
-	int media = mediaAcidentes(estados, TAM);
-	printf("A media de acidentes nos estados eh: %d\n.", media);
+	int media = mediaAcidentes(estados, REG);
+	printf("A media de acidentes no pais eh: %d.\n", media);
 
-	int maior, menor;
-	maiorMenorQntAcidentes(estados, TAM, &maior, &menor);
+	estadosAcimaMedia(estados, REG, media);
 
-	printf("Estado com maior acidentes: %d.\n", estados[maior].qntAcidentes);
-	printf("Estado com menor acidentes: %d.\n", estados[menor].qntAcidentes);
+	int estado;
+	printf("Digite o numero de um estado: ");
+	scanf_s("%d", &estado);
+	float mediaPorEstado = mediaAcidentesPorEstado(estados, estado - 1);
+	printf("A media de acidentes deste estado eh de %.2f acidente(s) por veiculo\n", mediaPorEstado);
 
 	system("pause");
 	return 0;
 }
 
-void coletarDados(struct Estado vetor[], int tam) {
+void cadastrarEstados(struct Estado estados[], int tam) {
 	int i;
-	for (i = 0; i < tam; i++) {
-		printf(">> Estado %d \n", i + 1);
-		fflush(stdin);
-		fflush(NULL);
-		
-		printf(">> Digite o nome: ");
-		gets_s(vetor[i].nome, sizeof(vetor[i].nome));
-		fflush(stdin);
-		fflush(NULL);
-		
-		printf(">> Digte a quantidade de veículos (em 2007): ");
-		scanf_s("%d", &vetor[i].qntVeiculos);
-		fflush(stdin);
-		fflush(NULL);
-		
-		printf(">> Digite a quantidade de acidentes (em 2007): ");
-		scanf_s("%d", &vetor[i].qntAcidentes);
-		fflush(stdin);
-		fflush(NULL);
+	printf("Cadastro de informacoes de %d estados\n\n", tam);
 
+	for (i = 0; i < tam; i++) {
+		struct Estado novoEstado;
+
+		char nome[NOME_TAM];
+		do {
+			printf("Digite o nome do estado %d: ", i+1);
+			fseek(stdin, 0, SEEK_END);
+			gets(nome);
+
+			if (strlen(nome) == 0 || strlen(nome) >= NOME_TAM) {
+				printf("O nome precisa ter no maximo %d caracteres.\n", NOME_TAM);
+			}
+			else {
+				strcpy(novoEstado.nome, nome);
+			}
+		} while (strlen(nome) == 0 || strlen(nome) >= NOME_TAM);
+
+		printf("Digite a quantidade de veiculos do estado (em 2007): ");
+		scanf_s("%d", &novoEstado.qntVeiculos);
+
+		printf("Digite a quantidade de acidentes no estado (em 2007): ");
+		scanf_s("%d", &novoEstado.qntAcidentes);
+
+		estados[i] = novoEstado;
 		printf("\n");
-		fflush(stdin);
-		fflush(NULL);
 	}
 }
 
-void maiorMenorQntAcidentes(struct Estado vetor[], int tam, int *posMenor, int *posMaior) {
-	if (tam <= 0) {
-		return;
-	}
-	
-	int i;
+void maiorMenorAcidentes(struct Estado estados[], int tam, int *posMenor, int *posMaior) {
 	*posMenor = 0;
 	*posMaior = 0;
-	for (i = 0; i < tam; i++) {
-		if (vetor[i].qntAcidentes > vetor[*posMaior].qntAcidentes) {
-			*posMaior = i;
-		}
-		if (vetor[i].qntAcidentes < vetor[*posMenor].qntAcidentes) {
-			*posMenor = i;
-		}
-	}
-}
-
-int mediaAcidentes(struct Estado vetor[], int tam) {
-	int i, qntAcidentes = 0;
-	for (i = 0; i < tam; i++) {
-		qntAcidentes += vetor[i].qntAcidentes;
-	}
-
-	return qntAcidentes / tam;
-}
-
-void estadosAcimaMedia(struct Estado vetor[], int tam, int media) {
-	if (tam <= 0) {
-		printf("Nao existem estados para exibir!\n");
-		return;
-	}
-
-	printf("Os estados acima da media de acidentes sao: \n");
-
 	int i;
 	for (i = 0; i < tam; i++) {
-		if (vetor[i].qntAcidentes > media) {
-			printf("%s.\n", vetor[i].nome);
+		if (estados[i].qntAcidentes < estados[*posMenor].qntAcidentes) {
+			*posMenor = i;
+		}
+
+		if (estados[i].qntAcidentes > estados[*posMaior].qntAcidentes) {
+			*posMaior = i;
 		}
 	}
+}
+
+int mediaAcidentes(struct Estado estados[], int tam) {
+	int i, somaAcidentes = 0;
+	for (i = 0; i < tam; i++) {
+		somaAcidentes += estados[i].qntAcidentes;
+	}
+	return somaAcidentes / tam;
+}
+
+void estadosAcimaMedia(struct Estado estados[], int tam, int media) {
+	printf("Exibindo estados acima da media de aciddentes: \n");
+	int i;
+	for (i = 0; i < tam; i++) {
+		if (estados[i].qntAcidentes > media) {
+			printf("Estado: %s, Quantidade de Acidentes: %d.\n", 
+				estados[i].nome, estados[i].qntAcidentes);
+		}
+	}
+}
+
+float mediaAcidentesPorEstado(struct Estado estados[], int pos) {
+	float media = estados[pos].qntVeiculos / estados[pos].qntAcidentes;
+	return media;
 }
