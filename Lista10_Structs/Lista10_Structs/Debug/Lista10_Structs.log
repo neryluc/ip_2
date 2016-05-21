@@ -1,4 +1,6 @@
 ﻿  questao3.c
-c:\dev\github\ip_2\lista10_structs\lista10_structs\questao3.c(23): warning C4101: 'contasPoupancas': unreferenced local variable
+c:\dev\github\ip_2\lista10_structs\lista10_structs\questao3.c(205): warning C4013: 'gets' undefined; assuming extern returning int
+c:\dev\github\ip_2\lista10_structs\lista10_structs\questao3.c(207): warning C4013: 'strlen' undefined; assuming extern returning int
+c:\dev\github\ip_2\lista10_structs\lista10_structs\questao3.c(210): warning C4013: 'strcpy' undefined; assuming extern returning int
   Lista10_Structs.vcxproj -> C:\Dev\github\ip_2\Lista10_Structs\Lista10_Structs\Debug\Lista10_Structs.exe
   Lista10_Structs.vcxproj -> C:\Dev\github\ip_2\Lista10_Structs\Lista10_Structs\Debug\Lista10_Structs.pdb (Partial PDB)
