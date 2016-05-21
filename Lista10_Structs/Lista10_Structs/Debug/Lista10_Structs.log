@@ -1,0 +1,6 @@
+﻿  questao2.c
+c:\dev\github\ip_2\lista10_structs\lista10_structs\questao2.c(170): warning C4013: 'gets' undefined; assuming extern returning int
+c:\dev\github\ip_2\lista10_structs\lista10_structs\questao2.c(172): warning C4013: 'strlen' undefined; assuming extern returning int
+c:\dev\github\ip_2\lista10_structs\lista10_structs\questao2.c(176): warning C4013: 'strcpy' undefined; assuming extern returning int
+  Lista10_Structs.vcxproj -> C:\Dev\github\ip_2\Lista10_Structs\Lista10_Structs\Debug\Lista10_Structs.exe
+  Lista10_Structs.vcxproj -> C:\Dev\github\ip_2\Lista10_Structs\Lista10_Structs\Debug\Lista10_Structs.pdb (Partial PDB)

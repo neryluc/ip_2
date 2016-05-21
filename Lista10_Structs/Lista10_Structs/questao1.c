@@ -5,7 +5,7 @@
 
 struct Estado {
 	char nome[50];
-	int qntVeiculos;
+	int qntVeiculos;a
 	int qntAcidentes;
 };
 
